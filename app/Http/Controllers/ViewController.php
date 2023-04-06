@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Breadcrumbs\Breadcrumb;
+use App\Interfaces\BreadcrumbInterface;
 use Illuminate\View\View;
 
-abstract class ViewController extends Controller
+abstract class ViewController extends Controller implements BreadcrumbInterface
 {
-    abstract protected function getBreadcrumb(): Breadcrumb;
-
     protected function view(string $view, array $data = [], array $mergeData = []): View
     {
-        $view = view();
+        $view = view($view, $data, $mergeData);
 
-        $view->with('breadcrumb', $this->getBreadcrumb());
+        // also append basic view data for base.blade.php here
+        $view->with('breadcrumb', $this->getBreadcrumb()->makeReadyForView());;
 
-        return view($view, $data, $mergeData);
+        return $view;
     }
 }
