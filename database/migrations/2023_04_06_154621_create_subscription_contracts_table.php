@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscribtion_contracts', function (Blueprint $table) {
+        Schema::create('subscription_contracts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subscribtion_id')->constrained('subscribtions');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignIdFor(Subscription::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->string('status');
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscribtion_contracts');
+        Schema::dropIfExists('subscription_contracts');
     }
 };

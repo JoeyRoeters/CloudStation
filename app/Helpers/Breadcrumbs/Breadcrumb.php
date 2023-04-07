@@ -3,7 +3,6 @@
 namespace App\Helpers\Breadcrumbs;
 
 use App\Interfaces\BreadcrumbInterface;
-use App\Interfaces\ViewInterface;
 
 class Breadcrumb
 {
@@ -23,8 +22,7 @@ class Breadcrumb
         string $route,
         ?string $parent = null,
         ?string $titleAppend = null
-    ): self
-    {
+    ): self {
         return new Breadcrumb($title, $route, $parent, $titleAppend);
     }
 
@@ -36,7 +34,7 @@ class Breadcrumb
     public function getTitle(bool $append = false): string
     {
         if ($append && $this->titleAppend !== null) {
-            return $this->title . ' ' . $this->titleAppend;
+            return $this->title.' '.$this->titleAppend;
         }
 
         return $this->title;

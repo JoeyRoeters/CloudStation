@@ -2,22 +2,38 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * App\Models\Subscription
+ *
+ * @property-read \App\Models\SubscriptionContract|null $contract
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscription newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscription newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Subscription query()
+ *
+ * @mixin \Eloquent
+ */
 class Subscription extends Model
 {
-    use HasFactory;
-
     protected $table = 'subscriptions';
 
-    public function contract()
+    /**
+     * @return belongsTo
+     */
+    public function contract(): belongsTo
     {
-        return $this->hasOne(SubscriptionContract::class, 'subscription_id', 'id');
+        return $this->belongsTo(SubscriptionContract::class, 'subscription_id');
     }
 
-    public function user()
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
-        return $this->hasOne(UserProfile::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 }

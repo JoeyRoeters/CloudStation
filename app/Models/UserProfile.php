@@ -2,17 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * App\Models\UserProfile
+ *
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserProfile query()
+ *
+ * @mixin \Eloquent
+ */
 class UserProfile extends Model
 {
-    use HasFactory;
-
     protected $table = 'user_profiles';
 
-    public function user()
+    /**
+     * @return BelongsTo
+     */
+    public function user(): belongsTo
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 }
