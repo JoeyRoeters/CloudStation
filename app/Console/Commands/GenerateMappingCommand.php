@@ -40,11 +40,11 @@ class GenerateMappingCommand extends Command
         $this->newLine();
         $this->components->twoColumnDetail('<fg=green;options=bold>Model</>', '<fg=green;options=bold>Generated mapping</>');
 
-        $this->getModels()->each(function (Stringable $model) {
+        $this->getModels()->each(function (Stringable $class) {
             try {
-                $this->components->twoColumnDetail($model, $this->compileClass($model));
+                $this->components->twoColumnDetail($class, $this->compileClass($class));
             } catch (Throwable) {
-                $this->components->twoColumnDetail("<fg=red>{$model}</>", '<fg=red>Failed</>');
+                $this->components->twoColumnDetail("<fg=red>{$class}</>", '<fg=red>Failed</>');
             }
         });
 
