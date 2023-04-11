@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\ImportMongoDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Test;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    dd(\App\Models\Station::first()->nearestLocations);
     return view('base/base');
 });
 
@@ -32,3 +34,5 @@ Route::middleware('auth')->group(function () {
 Route::get('/test', [Test::class, 'index'])->name('test');
 
 require __DIR__.'/auth.php';
+
+Route::get('/import-mongo-data', [ImportMongoDataController::class, 'index']);

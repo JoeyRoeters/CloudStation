@@ -24,7 +24,7 @@ class Subscription extends Model
     /**
      * @return belongsTo
      */
-    public function contract(): belongsTo
+    public function contract(): BelongsTo
     {
         return $this->belongsTo(SubscriptionContract::class, 'subscription_id');
     }
