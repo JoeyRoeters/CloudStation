@@ -125,6 +125,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'station_data_api_key' => env('STATION_DATA_API_KEY'),
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver

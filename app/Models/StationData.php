@@ -30,8 +30,8 @@ class StationData extends Model
 
     protected $casts = [
         'station_name' => 'int',
-        'date' => 'date',
-        'time' => 'time',
+        'date' => 'string',
+        'time' => 'string',
         'tempeture' => 'float',
         'dew_point_tempeture' => 'float',
         'station_air_pressure' => 'float',

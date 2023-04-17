@@ -19,4 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/station-data', [StationDataController::class, 'store']);
+
+Route::middleware('api-key')->group(function () {
+    Route::get('/station-data', [StationDataController::class, 'index']);
+    Route::post('/station-data', [StationDataController::class, 'store']);
+});
