@@ -60,6 +60,10 @@ class StationData extends Model
         $fillable = $this->getFillable();
         foreach ($fillable as $field) {
             if ($this->{$field} === null) {
+                if (static::getPreviousData($this->station_name)->isEmpty()) {
+                    return false;
+                }
+
                 throw new StationDataException('Field ' . $field . ' is required');
             }
         }
@@ -119,8 +123,8 @@ class StationData extends Model
     public function handleInconsistentData(): void
     {
         $lastData = static::getPreviousData($this->station_name);
-        if (empty($lastData)) {
-            throw new StationDataException('No previous data found for correction of inconsistent data');
+        if ($lastData->isEmpty()) {
+            return;
         }
 
         $date = \DateTime::createFromFormat('Y-m-d H:i:s', $lastData->first()->date . ' ' . $lastData->first()->time);
