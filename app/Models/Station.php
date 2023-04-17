@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Builder;
+use Alexzvn\LaravelMongoNotifiable\Notifiable;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\HasMany;
-use MongoDB\Collection;
 
 class Station extends Model
 {
+    use Notifiable;
+
     protected $connection = 'mongodb';
 
     protected $collection = 'stations';
+
+    protected $primaryKey = 'name';
 
     protected $fillable = [
         'name',

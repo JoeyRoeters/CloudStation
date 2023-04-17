@@ -14,7 +14,14 @@ class Test extends ViewController
 
     public function index()
     {
-        dd(Station::where('name', 726686)->get());
+        $stations = Station::where('name', 726686)->get();
+        foreach ($stations as $station) {
+            if ($station->unreadNotifications->count() > 0) {
+                dump($station->unreadNotifications);
+            }
+        }
+
+        die();
         return $this->view('base.base');
     }
 }
