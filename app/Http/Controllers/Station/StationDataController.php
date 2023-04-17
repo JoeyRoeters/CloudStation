@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Station;
 
+use App\Exceptions\Stations\StationDataApiException;
 use App\Http\Controllers\Controller;
+use App\Models\Station;
 use App\Models\StationData;
 use Illuminate\Http\Request;
 
@@ -12,6 +14,14 @@ class StationDataController extends Controller
     {
         $weatherData = $request->input('WEATHERDATA', []);
         foreach ($weatherData as $data) {
+            if (Station::where('name', (int) $data['STN'])->doesntExist()) {
+                throw new StationDataApiException('Station does not exist');
+            }
+
+            $data = array_map(function ($value) {
+                return $value === 'None' ? null : $value;
+            }, $data);
+
             $stationData = new StationData([
                 'station_name' => $data['STN'],
                 'date' => $data['DATE'],
@@ -28,6 +38,8 @@ class StationDataController extends Controller
                 'cloud_cover' => $data['CLDC'],
                 'wind_direction' => $data['WNDDIR'],
             ]);
+
+            $stationData->handleInconsistentData();
 
             $stationData->save();
         }

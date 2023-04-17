@@ -37,7 +37,7 @@ class ImportMongoDataController extends Controller
         foreach ($stations as $station) {
             // Create a new Station model
             $newStation = new Station([
-                'name' => $station->name,
+                'name' => (int) $station->name,
                 'longitude' => $station->longitude,
                 'latitude' => $station->latitude,
                 'elevation' => $station->elevation

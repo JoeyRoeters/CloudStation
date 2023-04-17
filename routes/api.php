@@ -21,6 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::middleware('api-key')->group(function () {
-    Route::get('/station-data', [StationDataController::class, 'index']);
-    Route::post('/station-data', [StationDataController::class, 'store']);
+
+});
+Route::group(['prefix' => 'station'], function () {
+    Route::get('/data', [StationDataController::class, 'index']);
+    Route::post('/data', [StationDataController::class, 'store']);
 });
