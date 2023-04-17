@@ -14,8 +14,6 @@ class StationDataController extends Controller
     {
         $weatherData = $request->input('WEATHERDATA', []);
 
-        \Log::info('data', $weatherData);
-
         foreach ($weatherData as $data) {
             if (Station::where('name', (int) $data['STN'])->doesntExist()) {
                 throw new StationDataApiException('Station does not exist');

@@ -1,6 +1,4 @@
-@extends("base.base_clean")
-
-@section('body-content')
+<x-app-layout>
     <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
         <!--begin::Header-->
         <div id="kt_app_header" class="app-header" data-kt-sticky="true" data-kt-sticky-activate="{default: false, lg: true}" data-kt-sticky-name="app-header-sticky" data-kt-sticky-offset="{default: false, lg: '300px'}">
@@ -27,47 +25,17 @@
                 </div>
                 <!--end::Sidebar toggle-->
                 @if (isset($breadcrumb))
-                <!--begin::Header wrapper-->
-                <div class="d-flex flex-stack flex-lg-row-fluid" id="kt_app_header_wrapper">
-                    <!--begin::Page title-->
-                    <div class="page-title gap-4 me-3 mb-5 mb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="{default: 'prepend', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_content_container', lg: '#kt_app_header_wrapper'}">
-                        <!--begin::Breadcrumb-->
-                        <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 mb-2">
-                            <li class="breadcrumb-item text-gray-600 fw-bold lh-1">
-                                <a href="/" class="text-gray-700 text-hover-primary me-1">
-                                    <i class="fonticon-home text-gray-700 fs-3"></i>
-                                </a>
-                            </li>
-
-                            <li class="breadcrumb-item">
-                                <!--begin::Svg Icon | path: icons/duotune/arrows/arr071.svg-->
-                                <span class="svg-icon svg-icon-4 svg-icon-gray-700 mx-n1">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path>
-											</svg>
-										</span>
-                                <!--end::Svg Icon-->
-                            </li>
-
-                            @foreach($breadcrumb->getBreadcrumbs() as $bc)
+                    <!--begin::Header wrapper-->
+                    <div class="d-flex flex-stack flex-lg-row-fluid" id="kt_app_header_wrapper">
+                        <!--begin::Page title-->
+                        <div class="page-title gap-4 me-3 mb-5 mb-lg-0" data-kt-swapper="true" data-kt-swapper-mode="{default: 'prepend', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_content_container', lg: '#kt_app_header_wrapper'}">
+                            <!--begin::Breadcrumb-->
+                            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 mb-2">
                                 <li class="breadcrumb-item text-gray-600 fw-bold lh-1">
-                                    <a href="{{ route($bc->getRoute()) }}" class="text-gray-700 text-hover-primary me-1">
-                                        {{ $bc->getTitle() }}
+                                    <a href="{{ route('dashboard') }}" class="text-gray-700 text-hover-primary me-1">
+                                        <i class="fonticon-home text-gray-700 fs-3"></i>
                                     </a>
                                 </li>
-                                @if(!$loop->last)
-                                    <li class="breadcrumb-item">
-                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr071.svg-->
-                                        <span class="svg-icon svg-icon-4 svg-icon-gray-700 mx-n1">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path>
-											</svg>
-										</span>
-                                        <!--end::Svg Icon-->
-                                    </li>
-                                @endif
-                            @endforeach
-                            <!--begin::Item-->
 
                                 <li class="breadcrumb-item">
                                     <!--begin::Svg Icon | path: icons/duotune/arrows/arr071.svg-->
@@ -78,17 +46,36 @@
 										</span>
                                     <!--end::Svg Icon-->
                                 </li>
-                                <li class="breadcrumb-item text-gray-500">{{ $breadcrumb->getTitle() }}</li>
-                        </ul>
-                        <!--end::Breadcrumb-->
-                        <!--begin::Title-->
-                        <h1 class="text-gray-900 fw-bolder m-0">{{ $breadcrumb->getTitle(true) }}</h1>
-                        <!--end::Title-->
-                    </div>
-                    <!--end::Page title-->
 
-                </div>
-                <!--end::Header wrapper-->
+                                @foreach($breadcrumb->getBreadcrumbs() as $bc)
+                                    <li class="breadcrumb-item text-gray-600 fw-bold lh-1">
+                                        <a href="{{ $bc->route }}" class="text-gray-700 text-hover-primary me-1">
+                                            {{ $bc->title }}
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr071.svg-->
+                                        <span class="svg-icon svg-icon-4 svg-icon-gray-700 mx-n1">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12.6343 12.5657L8.45001 16.75C8.0358 17.1642 8.0358 17.8358 8.45001 18.25C8.86423 18.6642 9.5358 18.6642 9.95001 18.25L15.4929 12.7071C15.8834 12.3166 15.8834 11.6834 15.4929 11.2929L9.95001 5.75C9.5358 5.33579 8.86423 5.33579 8.45001 5.75C8.0358 6.16421 8.0358 6.83579 8.45001 7.25L12.6343 11.4343C12.9467 11.7467 12.9467 12.2533 12.6343 12.5657Z" fill="currentColor"></path>
+                                        </svg>
+                                    </span>
+                                        <!--end::Svg Icon-->
+                                    </li>
+                                @endforeach
+                                <!--begin::Item-->
+
+                                <li class="breadcrumb-item text-gray-500">{{ $breadcrumb->title }}</li>
+                            </ul>
+                            <!--end::Breadcrumb-->
+                            <!--begin::Title-->
+                            <h1 class="text-gray-900 fw-bolder m-0">{{ $breadcrumb->getLabel() }}</h1>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Page title-->
+
+                    </div>
+                    <!--end::Header wrapper-->
                 @endif
             </div>
             <!--end::Header container-->
@@ -223,7 +210,6 @@
                         <!--end::Sidebar menu-->
 
 
-
                         <!--begin::Projects-->
 
                         <!--end::Projects-->
@@ -251,7 +237,8 @@
                                     <!--begin::Username-->
                                     <div class="d-flex flex-column">
                                         <div class="fw-bold d-flex align-items-center fs-5">Max Smith
-                                            <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span></div>
+                                            <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
+                                        </div>
                                         <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">max@kt.com</a>
                                     </div>
                                     <!--end::Username-->
@@ -324,7 +311,8 @@
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-5">
-                                <a href="../../demo27/dist/account/statements.html" class="menu-link px-5">My Statements</a>
+                                <a href="../../demo27/dist/account/statements.html" class="menu-link px-5">My
+                                    Statements</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu separator-->
@@ -482,12 +470,14 @@
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-5 my-1">
-                                <a href="../../demo27/dist/account/settings.html" class="menu-link px-5">Account Settings</a>
+                                <a href="../../demo27/dist/account/settings.html" class="menu-link px-5">Account
+                                    Settings</a>
                             </div>
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-5">
-                                <a href="../../demo27/dist/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">Sign Out</a>
+                                <a href="../../demo27/dist/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">Sign
+                                    Out</a>
                             </div>
                             <!--end::Menu item-->
                         </div>
@@ -513,9 +503,9 @@
             <!--end::Sidebar-->
             <!--begin::Main-->
 
-            @yield('content')
+            {{ $slot }}
             <!--end:::Main-->
         </div>
         <!--end::Wrapper-->
     </div>
-@endsection
+</x-app-layout>

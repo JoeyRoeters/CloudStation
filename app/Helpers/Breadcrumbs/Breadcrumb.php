@@ -10,10 +10,10 @@ class Breadcrumb
     private array $breadcrumbs = [];
 
     public function __construct(
-        private string $title,
-        private string $route,
-        private ?string $parent = null,
-        private ?string $titleAppend = null
+        public readonly string  $title,
+        public readonly string  $route,
+        public readonly ?string $parent = null,
+        public readonly ?string $append = null
     ) {
     }
 
@@ -21,9 +21,9 @@ class Breadcrumb
         string $title,
         string $route,
         ?string $parent = null,
-        ?string $titleAppend = null
-    ): self {
-        return new Breadcrumb($title, $route, $parent, $titleAppend);
+        ?string $append = null
+    ): static {
+        return new static($title, $route, $parent, $append);
     }
 
     public function getBreadcrumbs(): array
@@ -31,18 +31,13 @@ class Breadcrumb
         return $this->breadcrumbs;
     }
 
-    public function getTitle(bool $append = false): string
+    public function getLabel(): string
     {
-        if ($append && $this->titleAppend !== null) {
-            return $this->title.' '.$this->titleAppend;
+        if ($this->append !== null) {
+            return $this->title.' '.$this->append;
         }
 
         return $this->title;
-    }
-
-    public function getRoute(): string
-    {
-        return $this->route;
     }
 
     private function getParent(): ?BreadcrumbInterface
@@ -54,14 +49,14 @@ class Breadcrumb
         return new $this->parent();
     }
 
-    public function makeReadyForView(): self
+    public function resolve(): self
     {
-        $classess = [];
+        $classes = [];
 
         $parent = $this->getParent();
-        while ($parent instanceof BreadcrumbInterface && !in_array($parent::class, $classess)) {
-            $classess[] = $parent::class;
-            $breadCrumb = $parent->getBreadcrumb();
+        while ($parent instanceof BreadcrumbInterface && !in_array($parent::class, $classes)) {
+            $classes[] = $parent::class;
+            $breadCrumb = $parent->breadcrumb();
 
             $this->breadcrumbs[] = $breadCrumb;
             $parent = $breadCrumb->getParent();
