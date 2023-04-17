@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\HasMany;
+use MongoDB\Collection;
 
 class Station extends Model
 {
@@ -18,6 +20,13 @@ class Station extends Model
         'elevation'
     ];
 
+    protected $casts = [
+        'name' => 'int',
+        'longitude' => 'float',
+        'latitude' => 'float',
+        'elevation' => 'float',
+    ];
+
     public function geolocations(): HasMany
     {
         return $this->hasMany(Geolocation::class, 'station_name', 'name');
@@ -26,5 +35,10 @@ class Station extends Model
     public function nearestLocations(): HasMany
     {
         return $this->hasMany(NearestLocation::class, 'station_name', 'name');
+    }
+
+    public function stationData(): HasMany
+    {
+        return $this->hasMany(StationData::class, 'station_name', 'name');
     }
 }

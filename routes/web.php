@@ -1,6 +1,6 @@
 <?php
 
-use App\Console\ImportMongoDataController;
+use App\Http\Controllers\ImportMongoDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Test;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd(\App\Models\Station::first()->nearestLocations);
     return view('base/base');
 });
 

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Console;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\Geolocation;
 use App\Models\NearestLocation;
