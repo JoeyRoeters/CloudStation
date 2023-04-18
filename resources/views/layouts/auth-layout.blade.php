@@ -502,8 +502,11 @@
             </div>
             <!--end::Sidebar-->
             <!--begin::Main-->
-
-            {{ $slot }}
+            <div class="app-content flex-column-fluid ">
+                <div class="app-container container-fluid ">
+                    {{ $slot }}
+                </div>
+            </div>
             <!--end:::Main-->
         </div>
         <!--end::Wrapper-->
