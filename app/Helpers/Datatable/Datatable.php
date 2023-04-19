@@ -30,6 +30,8 @@ class Datatable
         /** @var Builder $query */
         $query = $this->query;
 
+        $total = $this->query->get()->count();
+
         if(!is_null($request->search['value'])) {
             foreach ($this->columns as $column) {
                 $query->orWhereRaw([
@@ -49,7 +51,7 @@ class Datatable
             'recordsTotal' => $data->total(),
             'recordsFiltered' => $data->count(),
             'iTotalDisplayRecords' => $data->total(),
-            'iTotalRecords' => $this->query->get()->count(),
+            'iTotalRecords' => $total,
             'data' => $data->map(fn($row) => array_values(array_merge(array_flip($this->columns), $row->toArray()))),
         ));
     }
