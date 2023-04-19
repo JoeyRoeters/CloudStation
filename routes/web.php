@@ -29,6 +29,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
     Route::get('/station', [StationIndexController::class, 'index'])->name('station.index');
     Route::get('/station/table', [StationIndexController::class, 'table']);
     Route::get('/station/{station}', [StationShowController::class, 'show'])->name('station.show');
+    Route::post('/station/{station}', [StationShowController::class, 'store'])->name('station.store');
 
     Route::get('/notification', [NotificationController::class, 'index'])->name('notification.index');
     Route::get('/notification/table', [NotificationController::class, 'table']);

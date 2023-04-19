@@ -49,7 +49,7 @@ class AnalyseController implements BreadcrumbInterface
      */
     public function store(AnalyseRequest $request): RedirectResponse
     {
-        $this->service->setSelection($request);
+        $this->service->setSelection($request->validated());
 
         return Redirect::route('analyse');
     }

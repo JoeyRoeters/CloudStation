@@ -5,7 +5,7 @@
                 <div class="card mt-5 mt-xl-10">
                     <div class="card-header cursor-pointer">
                         <div class="card-title m-0">
-                            <h3 class="fw-bold m-0">Station Details</h3>
+                            <h3 class="fw-bold m-0">Station details</h3>
                         </div>
 
                     </div>
@@ -209,6 +209,34 @@
             </div>
 
         </div>
+
+        <h3 class="fw-bold my-10">Station values</h3>
+
+        <div class="d-flex flex-column flex-row-fluid gap-3 mt-8">
+            <form class="d-flex flex-row gap-3" method="post" action="{{ route('station.store', $station->id) }}">
+                @csrf
+                <div class="w-300px">
+                    <label class="form-label">{{  __('Date Range') }}</label>
+                    <input class="form-control form-control-solid" name="range" placeholder="Pick date rage"
+                           id="date-range-picker"/>
+                    <div class="fv-plugins-message-container invalid-feedback">{{ $errors->first('range') }}</div>
+                </div>
+                <div class="mt-8">
+                    <x-buttons.submit label="search"/>
+                </div>
+            </form>
+            @foreach($labels as $id => $label)
+                <div class="card card-flush text-bg-light">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ $label }}</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div id="{{ $id }}" style="height: 400px;"></div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        @include('share.chart-js')
         @push('footer')
             <script>
                 let chart = am4core.create("chartdiv", am4maps.MapChart);

@@ -83,13 +83,13 @@ class AnalyseStationDataService
     }
 
     /**
-     * @param AnalyseRequest $request
+     * @param array $request
      *
      * @return void
      */
-    public function setSelection(AnalyseRequest $request): void
+    public function setSelection(array $data): void
     {
-        $this->session->put(self::SELECTION, $request->validated());
+        $this->session->put(self::SELECTION, $data);
     }
 
     /**
