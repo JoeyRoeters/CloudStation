@@ -14,6 +14,8 @@
         <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css"/>
+
+        @vite('resources/css/app.css')
     </head>
     <body id="kt_body" @if(isset($login)) class="app-blank app-blank bgi-size-cover bgi-position-center bgi-no-repeat" @else data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" class="app-default"  @endif">
 

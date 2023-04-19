@@ -24,6 +24,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
 
     Route::prefix('analyse')->group(function() {
         Route::get('/', [AnalyseController::class, 'index'])->name('analyse');
+        Route::post('/', [AnalyseController::class, 'store'])->name('analyse');
     });
 });
 

@@ -2,7 +2,7 @@
 
 namespace App\Helpers\Breadcrumbs;
 
-use App\Interfaces\BreadcrumbInterface;
+use App\Contracts\BreadcrumbInterface;
 
 class Breadcrumb
 {

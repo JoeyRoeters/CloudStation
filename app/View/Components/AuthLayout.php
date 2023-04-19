@@ -2,7 +2,7 @@
 
 namespace App\View\Components;
 
-use App\Interfaces\BreadcrumbInterface;
+use App\Contracts\BreadcrumbInterface;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\Component;

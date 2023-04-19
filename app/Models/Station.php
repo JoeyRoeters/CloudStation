@@ -3,9 +3,15 @@
 namespace App\Models;
 
 use Alexzvn\LaravelMongoNotifiable\Notifiable;
+use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\HasMany;
+use Jenssegers\Mongodb\Relations\HasOne;
 
+/**
+ * @property Collection $data
+ * @property NearestLocation $nearestLocation
+ */
 class Station extends Model
 {
     use Notifiable;
@@ -13,8 +19,6 @@ class Station extends Model
     protected $connection = 'mongodb';
 
     protected $collection = 'stations';
-
-    protected $primaryKey = 'name';
 
     protected $fillable = [
         'name',
@@ -30,18 +34,27 @@ class Station extends Model
         'elevation' => 'float',
     ];
 
-    public function geolocations(): HasMany
-    {
-        return $this->hasMany(Geolocation::class, 'station_name', 'name');
-    }
-
-    public function nearestLocations(): HasMany
-    {
-        return $this->hasMany(NearestLocation::class, 'station_name', 'name');
-    }
-
-    public function stationData(): HasMany
+    /**
+     * @return HasMany
+     */
+    public function data(): HasMany
     {
         return $this->hasMany(StationData::class, 'station_name', 'name');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function geolocation(): HasOne
+    {
+        return $this->hasOne(Geolocation::class, 'station_name', 'name');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function nearestLocation(): HasOne
+    {
+        return $this->hasOne(NearestLocation::class, 'station_name', 'name');
     }
 }

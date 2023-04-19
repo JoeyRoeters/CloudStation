@@ -4,18 +4,19 @@ namespace App\Models;
 
 use App\Exceptions\Stations\StationDataException;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Relations\BelongsTo;
 
 /**
  * Class StationData
- * @package App\Models
+ *
  * @property int $station_name
  * @property string $date
  * @property string $time
- * @property float $tempeture
- * @property float $dew_point_tempeture
+ * @property float $temperature
+ * @property float $dew_point_temperature
  * @property float $station_air_pressure
  * @property float $sea_level_pressure
  * @property float $visibility
@@ -26,14 +27,15 @@ use Jenssegers\Mongodb\Relations\BelongsTo;
  * @property float $cloud_cover
  * @property float $wind_direction
  * @property Station $station
- * @property string $created_at
- * @property string $updated_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  * @property string $_id
+ *
  * @method static Builder whereStationName($value)
  * @method static Builder whereDate($value)
  * @method static Builder whereTime($value)
- * @method static Builder whereTempeture($value)
- * @method static Builder whereDewPointTempeture($value)
+ * @method static Builder whereTemperature($value)
+ * @method static Builder whereDewPointTemperature($value)
  * @method static Builder whereStationAirPressure($value)
  * @method static Builder whereSeaLevelPressure($value)
  * @method static Builder whereVisibility($value)
@@ -75,8 +77,8 @@ class StationData extends Model
         'station_name',
         'date',
         'time',
-        'tempeture',
-        'dew_point_tempeture',
+        'temperature',
+        'dew_point_temperature',
         'station_air_pressure',
         'sea_level_pressure',
         'visibility',
@@ -92,8 +94,8 @@ class StationData extends Model
         'station_name' => 'int',
         'date' => 'string',
         'time' => 'string',
-        'tempeture' => 'float',
-        'dew_point_tempeture' => 'float',
+        'temperature' => 'float',
+        'dew_point_temperature' => 'float',
         'station_air_pressure' => 'float',
         'sea_level_pressure' => 'float',
         'visibility' => 'float',
@@ -138,42 +140,42 @@ class StationData extends Model
         }
 
         // calculate average of last 10 entries
-        $calcAvarege = function ($field) use ($lastData) {
+        $calcAverage = function ($field) use ($lastData) {
             $values = $lastData->pluck($field)->toArray();
             return array_sum($values) / count($values);
         };
 
-        if ($this->tempeture === null) {
-            $this->tempeture = $calcAvarege('tempeture');
+        if ($this->temperature === null) {
+            $this->temperature = $calcAverage('temperature');
         }
 
-        if ($this->dew_point_tempeture === null) {
-            $this->dew_point_tempeture = $calcAvarege('dew_point_tempeture');
+        if ($this->dew_point_temperature === null) {
+            $this->dew_point_temperature = $calcAverage('dew_point_temperature');
         }
 
         // calculate average of last 10 station_air_pressures
         if ($this->station_air_pressure === null) {
-            $this->station_air_pressure = $calcAvarege('station_air_pressure');
+            $this->station_air_pressure = $calcAverage('station_air_pressure');
         }
 
         if ($this->sea_level_pressure === null) {
-            $this->sea_level_pressure = $calcAvarege('sea_level_pressure');
+            $this->sea_level_pressure = $calcAverage('sea_level_pressure');
         }
 
         if ($this->visibility === null) {
-            $this->visibility = $calcAvarege('visibility');
+            $this->visibility = $calcAverage('visibility');
         }
 
         if ($this->wind_speed === null) {
-            $this->wind_speed = $calcAvarege('wind_speed');
+            $this->wind_speed = $calcAverage('wind_speed');
         }
 
         if ($this->precipitation === null) {
-            $this->precipitation = $calcAvarege('precipitation');
+            $this->precipitation = $calcAverage('precipitation');
         }
 
         if ($this->snow_depth === null) {
-            $this->snow_depth = $calcAvarege('snow_depth');
+            $this->snow_depth = $calcAverage('snow_depth');
         }
 
         if ($this->weather_condition === null) {
@@ -181,11 +183,11 @@ class StationData extends Model
         }
 
         if ($this->cloud_cover === null) {
-            $this->cloud_cover = $calcAvarege('cloud_cover');
+            $this->cloud_cover = $calcAverage('cloud_cover');
         }
 
         if ($this->wind_direction === null) {
-            $this->wind_direction = $calcAvarege('wind_direction');
+            $this->wind_direction = $calcAverage('wind_direction');
         }
     }
 }

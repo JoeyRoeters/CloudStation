@@ -3,26 +3,54 @@
 namespace App\Http\Controllers\Analyse;
 
 use App\Helpers\Breadcrumbs\Breadcrumb;
-use App\Interfaces\BreadcrumbInterface;
-use Illuminate\Http\Request;
+use App\Http\Requests\AnalyseRequest;
+use App\Contracts\BreadcrumbInterface;
+use App\Services\AnalyseStationDataService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\View;
 
 class AnalyseController implements BreadcrumbInterface
 {
+    public function __construct(
+        private readonly AnalyseStationDataService $service
+    ) {
+        //
+    }
+
     public function breadcrumb(): Breadcrumb
     {
-        return Breadcrumb::create('analyse', route('analyse'));
+        return Breadcrumb::create(trans('Analyse'), route('analyse'));
     }
 
     /**
-     * @param Request $request
-     *
      * @return View
      */
-    public function index(Request $request): View
+    public function index(): View
     {
+        $factory = $this->service->getFactory();
+        $view = ViewFacade::make('analyse.index', $this->service->toArray([
+            'interval' => $factory->getInterval(),
+            'format' => $factory->getFormat()
+        ]));
 
+        if ($this->service->hasSelection()) {
+            $view->with('values', $factory->handle()->toJson());
+        }
 
-        return view('analyse.index');
+        return $view;
+    }
+
+    /**
+     * @param AnalyseRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function store(AnalyseRequest $request): RedirectResponse
+    {
+        $this->service->setSelection($request);
+
+        return Redirect::route('analyse');
     }
 }
