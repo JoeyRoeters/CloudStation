@@ -109,7 +109,7 @@
                             <!--begin::Menu Item-->
                             <div class="menu-item">
                                 <!--begin::Menu link-->
-                                <a href="" class="menu-link">
+                                <a href="{{ route('station.index') }}" class="menu-link">
                                     <!--begin::Icon-->
                                     <span class="menu-icon">
 												<i class="fas fa-cloud-sun"></i>
@@ -133,6 +133,22 @@
                                     <!--end::Icon-->
                                     <!--begin::Title-->
                                     <span class="menu-title">Analyseer</span>
+                                    <!--end::Title-->
+                                </a>
+                                <!--end:::Menu link-->
+                            </div>
+                            <!--end::Menu Item-->
+                            <!--begin::Menu Item-->
+                            <div class="menu-item">
+                                <!--begin::Menu link-->
+                                <a href="{{ route('notification.index') }}" class="menu-link">
+                                    <!--begin::Icon-->
+                                    <span class="menu-icon">
+												<i class="fas fa-bell"></i>
+											</span>
+                                    <!--end::Icon-->
+                                    <!--begin::Title-->
+                                    <span class="menu-title">Notifications</span>
                                     <!--end::Title-->
                                 </a>
                                 <!--end:::Menu link-->
