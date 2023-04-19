@@ -4,6 +4,7 @@ use App\Http\Controllers\Analyse\AnalyseController;
 use App\Http\Controllers\ImportMongoDataController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use \Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware(['auth:web', 'verified'])->group(function () {
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    Route::get('dashboard', fn() => view('dashboard'))->name('dashboard');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::prefix('analyse')->group(function() {
         Route::get('/', [AnalyseController::class, 'index'])->name('analyse');
@@ -31,3 +32,5 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
 require __DIR__.'/auth.php';
 
 Route::get('/import-mongo-data', [ImportMongoDataController::class, 'index']);
+
+Route::fallback(fn () => Redirect::route('dashboard'));

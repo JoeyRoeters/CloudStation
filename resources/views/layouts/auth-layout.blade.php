@@ -93,7 +93,7 @@
                             <!--begin::Menu Item-->
                             <div class="menu-item">
                                 <!--begin::Menu link-->
-                                <a href="../../demo27/dist/apps/projects/project.html" class="menu-link">
+                                <a href="{{ route('dashboard') }}" class="menu-link">
                                     <!--begin::Icon-->
                                     <span class="menu-icon">
 												<i class="fas fa-home"></i>
