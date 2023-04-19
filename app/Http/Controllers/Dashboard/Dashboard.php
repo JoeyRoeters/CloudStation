@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Contracts\BreadcrumbInterface;
 use App\Helpers\Breadcrumbs\Breadcrumb;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\TestParent;
-use App\Interfaces\BreadcrumbInterface;
 
 class Dashboard implements BreadcrumbInterface
 {
