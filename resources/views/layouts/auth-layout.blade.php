@@ -100,7 +100,7 @@
 											</span>
                                     <!--end::Icon-->
                                     <!--begin::Title-->
-                                    <span class="menu-title">Overzicht</span>
+                                    <span class="menu-title">Dashboard</span>
                                     <!--end::Title-->
                                 </a>
                                 <!--end:::Menu link-->
@@ -132,7 +132,7 @@
 											</span>
                                     <!--end::Icon-->
                                     <!--begin::Title-->
-                                    <span class="menu-title">Analyseer</span>
+                                    <span class="menu-title">Analyse</span>
                                     <!--end::Title-->
                                 </a>
                                 <!--end:::Menu link-->
@@ -496,7 +496,7 @@
 {{--                    </div>--}}
                     <!--end::User menu-->
                     <!--begin::Logout-->
-                    <form method="post" action="{{ route('logout') }}">
+                    <form method="post" action="{{ route('logout') }}" class="ml-auto">
                         @csrf
                         <button class="btn btn-sm btn-outline btn-flex btn-custom px-3">
                             <span class="svg-icon svg-icon-3 me-2">

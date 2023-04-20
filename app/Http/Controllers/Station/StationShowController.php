@@ -7,17 +7,17 @@ use App\Http\Controllers\Controller;
 use App\Contracts\BreadcrumbInterface;
 use App\Http\Requests\StationRequest;
 use App\Models\Station;
-use App\Services\AnalyseStationDataService;
-use Illuminate\Http\Request;
+use App\Services\AnalyseMeasurementService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\View as ViewFacade;
 
 class StationShowController extends Controller implements BreadcrumbInterface
 {
     public function __construct(
-        private readonly AnalyseStationDataService $service
+        private readonly AnalyseMeasurementService $service
     ) {
         //
     }
@@ -35,6 +35,8 @@ class StationShowController extends Controller implements BreadcrumbInterface
      */
     public function show(Station $station)
     {
+        Session::put(AnalyseMeasurementService::SELECTION_STATIONS, [$station->name]);
+
         $factory = $this->service->getFactory();
         $view = ViewFacade::make('station.detail', $this->service->toArray([
             'interval' => $factory->getInterval(),
@@ -42,7 +44,6 @@ class StationShowController extends Controller implements BreadcrumbInterface
             'station' => $station,
             'nearestLocation' => $station->nearestLocation()->first(),
             'geoLocation' => $station->geoLocation()->first(),
-            'data' => $station->data()->get(),
         ]));
 
         if ($this->service->hasSelection()) {
@@ -54,11 +55,7 @@ class StationShowController extends Controller implements BreadcrumbInterface
 
     public function store(StationRequest $request, Station $station)
     {
-        $data = $request->validated();
-
-        $data['station_ids'] = [$station->name];
-
-        $this->service->setSelection($data);
+        $this->service->setSelection($request->validated());
 
         return Redirect::route('station.show', $station->id);
     }

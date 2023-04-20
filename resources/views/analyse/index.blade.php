@@ -23,7 +23,7 @@
                 <input class="form-control form-control-solid" name="range" placeholder="Pick date rage" id="date-range-picker"/>
                 <div class="fv-plugins-message-container invalid-feedback">{{ $errors->first('range') }}</div>
             </div>
-            <div class="mt-8">
+            <div class="mt-[27px]">
                 <x-buttons.submit label="search"/>
             </div>
         </form>

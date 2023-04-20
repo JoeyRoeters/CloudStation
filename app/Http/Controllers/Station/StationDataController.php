@@ -5,44 +5,48 @@ namespace App\Http\Controllers\Station;
 use App\Exceptions\Stations\StationDataApiException;
 use App\Http\Controllers\Controller;
 use App\Models\Station;
-use App\Models\StationData;
+use App\Models\Measurement;
+use App\Services\StoreMeasurementService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class StationDataController extends Controller
 {
+    public function __construct(
+        private readonly StoreMeasurementService $service
+    ) {
+
+    }
+
     public function store(Request $request)
     {
-        $weatherData = $request->input('WEATHERDATA', []);
+        $weatherData = $request->get('WEATHERDATA', []);
 
         foreach ($weatherData as $data) {
-            if (Station::where('name', (int) $data['STN'])->doesntExist()) {
-                throw new StationDataApiException('Station does not exist');
-            }
+            $data['STN'] = (int) $data['STN'];
 
-            $data = array_map(function ($value) {
-                return $value === 'None' ? null : $value;
-            }, $data);
-
-            $stationData = new StationData([
-                'station_name' => $data['STN'],
-                'date' => $data['DATE'],
-                'time' => $data['TIME'],
-                'temperature' => $data['TEMP'],
-                'dew_point_temperature' => $data['DEWP'],
-                'station_air_pressure' => $data['STP'],
-                'sea_level_pressure' => $data['SLP'],
-                'visibility' => $data['VISIB'],
-                'wind_speed' => $data['WDSP'],
-                'precipitation' => $data['PRCP'],
-                'snow_depth' => $data['SNDP'],
-                'weather_condition' => $data['FRSHTT'],
-                'cloud_cover' => $data['CLDC'],
-                'wind_direction' => $data['WNDDIR'],
+            $validator = Validator::make($data, [
+                'STN' => ['required', Rule::exists(Station::class, 'name')]
             ]);
 
-            $stationData->handleInconsistentData();
+            if ($validator->fails()) {
+                Log::error('Station not found');
 
-            $stationData->save();
+                continue;
+            }
+
+            $measurement = new Measurement(
+                $this->service->resolveAttributes($data)
+            );
+
+            $saved = $measurement->save();
+
+            if (!$saved) {
+                Log::error('failed to save record', $measurement->attributesToArray());
+            }
         }
 
         return response()->json(['message' => 'Weather data stored successfully']);

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Analyse;
 use App\Helpers\Breadcrumbs\Breadcrumb;
 use App\Http\Requests\AnalyseRequest;
 use App\Contracts\BreadcrumbInterface;
-use App\Services\AnalyseStationDataService;
+use App\Services\AnalyseMeasurementService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View as ViewFacade;
@@ -14,7 +14,7 @@ use Illuminate\View\View;
 class AnalyseController implements BreadcrumbInterface
 {
     public function __construct(
-        private readonly AnalyseStationDataService $service
+        private readonly AnalyseMeasurementService $service
     ) {
         //
     }

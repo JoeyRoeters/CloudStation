@@ -9,7 +9,7 @@ use Jenssegers\Mongodb\Relations\HasMany;
 use Jenssegers\Mongodb\Relations\HasOne;
 
 /**
- * @property Collection $data
+ * @property Collection $measurements
  * @property NearestLocation $nearestLocation
  */
 class Station extends Model
@@ -37,9 +37,9 @@ class Station extends Model
     /**
      * @return HasMany
      */
-    public function data(): HasMany
+    public function measurements(): HasMany
     {
-        return $this->hasMany(StationData::class, 'station_name', 'name');
+        return $this->hasMany(Measurement::class, 'station_name', 'name');
     }
 
     /**

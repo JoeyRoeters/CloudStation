@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Station;
-use App\Services\AnalyseStationDataService;
+use App\Services\AnalyseMeasurementService;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Session;
@@ -34,7 +34,7 @@ class AnalyseRequest extends FormRequest
         $station_ids = $this->get('station_ids', []);
         [$start, $end] = explode(' - ', $this->get('range'));
 
-        if (is_null($station_ids[0])) {
+        if (!isset($station_ids[0])) {
             $station_ids = [];
         }
 
@@ -47,7 +47,7 @@ class AnalyseRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        Session::remove(AnalyseStationDataService::SELECTION);
+        Session::remove(AnalyseMeasurementService::SELECTION);
 
         parent::failedValidation($validator);
     }

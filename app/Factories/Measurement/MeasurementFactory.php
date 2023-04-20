@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Factories\StationData;
+namespace App\Factories\Measurement;
 
 use App\Models\Station;
-use App\Models\StationData;
+use App\Models\Measurement;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Relations\HasMany;
 use MongoDB\BSON\UTCDateTime;
 
-abstract class StationDataFactory
+abstract class MeasurementFactory
 {
     /**
      * StationDataFactory constructor
@@ -26,8 +26,7 @@ abstract class StationDataFactory
         protected readonly Carbon $start,
         protected readonly Carbon $end,
         protected readonly array  $fields,
-    )
-    {
+    ) {
         //
     }
 
@@ -40,11 +39,11 @@ abstract class StationDataFactory
             $data = $this->resolveDataTemplate();
             $periodRange = $this->resolvePeriodRange();
 
-            $station->data->each(function(StationData $data) use ($periodRange) {
-                $period = $periodRange->get($this->getPeriodString($data->created_at));
+            $station->measurements->each(function(Measurement $measurement) use ($periodRange) {
+                $period = $periodRange->get($this->getPeriodString($measurement->created_at));
 
                 if ($period instanceof Collection) {
-                    $period->add($data->only($this->fields));
+                    $period->add($measurement->only($this->fields));
                 }
             });
 
@@ -53,12 +52,12 @@ abstract class StationDataFactory
                 $timestamp = Carbon::make($date)->getTimestampMs();
 
                 foreach ($this->fields as $field) {
-                    /** @var Collection $series */
-                    $series = $data->get($field);
+                    /** @var Collection $measurements */
+                    $measurements = $data->get($field);
 
-                    $series->add([
+                    $measurements->add([
                         'date' => $timestamp,
-                        'value' => $isNotEmpty ? $collection->average($field) : null
+                        'value' => $isNotEmpty ? round($collection->average($field), 1) : null
                     ]);
                 }
             });
@@ -73,10 +72,10 @@ abstract class StationDataFactory
     protected function query(): Builder
     {
         return Station::with([
-            'data' => function(HasMany $query) {
+            'measurements' => function(HasMany $query) {
                 $query->whereBetween('created_at', [
-                    new UTCDateTime($this->start->startOfDay()->getTimestampMs()),
-                    new UTCDateTime($this->end->endOfDay()->getTimestampMs()),
+                    new UTCDateTime($this->resolveStart()->getTimestampMs()),
+                    new UTCDateTime($this->resolveEnd()->getTimestampMs()),
                 ]);
             },
             'nearestLocation'
@@ -101,6 +100,22 @@ abstract class StationDataFactory
         return Collection::make($this->fields)->mapWithKeys(function(string $field) {
             return [$field => Collection::make()];
         });
+    }
+
+    /**
+     * @return Carbon
+     */
+    protected function resolveStart(): Carbon
+    {
+        return $this->start->clone()->startOfDay();
+    }
+
+    /**
+     * @return Carbon
+     */
+    protected function resolveEnd(): Carbon
+    {
+        return $this->end->clone()->endOfDay();
     }
 
     /**

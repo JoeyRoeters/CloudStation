@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Factories\StationData;
+namespace App\Factories\Measurement;
 
 use Carbon\Carbon as CarbonBase;
 use Carbon\CarbonPeriod;
 
-class PeriodStationDataFactory extends StationDataFactory
+class PeriodMeasurementFactory extends MeasurementFactory
 {
     /**
      * @inheritDoc

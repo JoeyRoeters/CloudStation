@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Factories\StationData\DayStationDataFactory;
-use App\Factories\StationData\PeriodStationDataFactory;
-use App\Factories\StationData\StationDataFactory;
+use App\Factories\Measurement\DayMeasurementFactory;
+use App\Factories\Measurement\PeriodMeasurementFactory;
+use App\Factories\Measurement\MeasurementFactory;
 use App\Http\Requests\AnalyseRequest;
 use App\Models\NearestLocation;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
-class AnalyseStationDataService
+class AnalyseMeasurementService
 {
     public const SELECTION = 'analyse';
     public const SELECTION_END = 'analyse.end';
@@ -56,9 +56,9 @@ class AnalyseStationDataService
     }
 
     /**
-     * @return StationDataFactory
+     * @return MeasurementFactory
      */
-    public function getFactory(): StationDataFactory
+    public function getFactory(): MeasurementFactory
     {
         $arguments = [
             'ids' => $this->getSelectionStations(),
@@ -68,10 +68,10 @@ class AnalyseStationDataService
         ];
 
         if ($this->getSelectionStartingDate()->isSameDay($this->getSelectionEndingDate())) {
-            return new DayStationDataFactory(...$arguments);
+            return new DayMeasurementFactory(...$arguments);
         }
 
-        return new PeriodStationDataFactory(...$arguments);
+        return new PeriodMeasurementFactory(...$arguments);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Measurement;
 use App\Models\Station;
 use App\Models\StationData;
 use App\Notifications\NoStationData;
@@ -26,9 +27,9 @@ class CheckStationData implements ShouldQueue
         $stations = Station::all();
 
         $stations->each(function ($station) {
-            $latestData = StationData::where('station_name', $station->name)->latest('created_at')->first();
+            $latestData = Measurement::where('station_name', $station->name)->latest('created_at')->first();
 
-            if (!$latestData || $latestData->created_at->diffInMinutes(Carbon::now()) > 1) {
+            if (!$latestData || $latestData->created_at->diffInMinutes(Carbon::now()) > 60) {
                 $station->notify(new NoStationData($station->name));
             }
         });

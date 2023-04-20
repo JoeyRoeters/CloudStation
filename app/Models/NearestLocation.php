@@ -9,7 +9,7 @@ class NearestLocation extends Model
 {
     protected $connection = 'mongodb';
 
-    protected $collection = 'nearst_locations';
+    protected $collection = 'nearest_locations';
 
     protected $fillable = [
         'name',
