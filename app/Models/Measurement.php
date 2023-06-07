@@ -88,6 +88,10 @@ class Measurement extends Model
         'wind_direction' => 'integer',
     ];
 
+    protected $hidden = [
+        '_id'
+    ];
+
     public function station(): BelongsTo
     {
         return $this->belongsTo(Station::class, 'station_name', 'name');

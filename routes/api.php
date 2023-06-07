@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Station\StationDataController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\LoginController;
+use App\Http\Controllers\Api\V1\WeatherMeasurementsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::prefix('v1')->group(function () {
+    Route::middleware('guest')->group(function () {
+       Route::post('login', LoginController::class)->name('api.login');
+    });
 
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('measurements', WeatherMeasurementsController::class)->name('api.measurements');
+
+        Route::prefix('auth')->group(function () {
+            Route::get('/', AuthController::class)->name('api.auth');
+        });
+    });
+});

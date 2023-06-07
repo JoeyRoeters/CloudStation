@@ -9,7 +9,9 @@ use Jenssegers\Mongodb\Relations\HasMany;
 use Jenssegers\Mongodb\Relations\HasOne;
 
 /**
+ * @property Measurement $newest
  * @property Collection $measurements
+ * @property Geolocation $geolocation
  * @property NearestLocation $nearestLocation
  */
 class Station extends Model
@@ -34,12 +36,24 @@ class Station extends Model
         'elevation' => 'float',
     ];
 
+    protected $hidden = [
+        '_id'
+    ];
+
     /**
      * @return HasMany
      */
     public function measurements(): HasMany
     {
         return $this->hasMany(Measurement::class, 'station_name', 'name');
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function newest(): HasOne
+    {
+        return $this->hasOne(Measurement::class, 'station_name', 'name')->latest();
     }
 
     /**
