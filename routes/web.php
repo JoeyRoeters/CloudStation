@@ -53,6 +53,4 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/import-mongo-data', [ImportMongoDataController::class, 'index']);
-
 Route::fallback(fn () => Redirect::route('dashboard'));

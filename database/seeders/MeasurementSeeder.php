@@ -26,7 +26,7 @@ class MeasurementSeeder extends Seeder
         $dates = $period->toArray();
 
         Measurement::factory([
-            'station_name' => 100020
+            'station_name' => 63770
         ])->state(
             $this->createdAtField($dates)
         )->count($period->count())->create();

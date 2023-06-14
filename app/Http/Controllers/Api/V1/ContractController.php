@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Support\Facades\Auth;
+use App\Facades\Contract;
 
 class ContractController
 {
     public function __invoke()
     {
-        return Auth::user()->currentAccessToken()->abilities;
+        return Contract::only(['countries', 'selectables']);
     }
 }

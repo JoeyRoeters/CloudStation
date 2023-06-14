@@ -8,10 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
@@ -20,9 +22,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('companies');
     }
 };

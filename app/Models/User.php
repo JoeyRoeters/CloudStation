@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,8 +21,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
+ * @property int|null $company_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Company|null $company
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
@@ -29,8 +32,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \App\Models\UserProfile|null $profile
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
- * @property-read int|null $subscriptions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
@@ -39,6 +40,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCompanyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
@@ -91,11 +93,8 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class);
     }
 
-    /**
-     * @return HasMany
-     */
-    public function subscriptions(): HasMany
+    public function company(): BelongsTo
     {
-        return $this->hasMany(Subscription::class);
+        return $this->belongsTo(Company::class);
     }
 }

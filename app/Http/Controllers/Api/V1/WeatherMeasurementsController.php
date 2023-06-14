@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Facades\Contract;
 use App\Http\Requests\Api\V1\WeatherMeasurementsRequest;
 use App\Models\Station;
-use Illuminate\Support\Facades\Auth;
 use Jenssegers\Mongodb\Eloquent\Builder;
 use Jenssegers\Mongodb\Relations\HasMany;
 use Jenssegers\Mongodb\Relations\HasOne;
@@ -13,16 +13,17 @@ class WeatherMeasurementsController
 {
     public function __invoke(WeatherMeasurementsRequest $request)
     {
-        $options = Auth::user()->currentAccessToken()->abilities;
+        /** @var \App\Models\Contract $contract */
+        $contract = Contract::getFacadeRoot();
 
         return Station::query()->with(
             $request->get('history') ? 'measurements' : 'newest',
-            function (HasOne|HasMany $query) use ($options) {
-                $query->select('station_name', ...$options['selectable']);
+            function (HasOne|HasMany $query) use ($contract) {
+                $query->select('station_name', ...$contract->selectables);
             }
         )->whereHas('geolocation',
-            function (Builder $query) use ($options) {
-                $query->whereIn('country_code', $options['countries']);
+            function (Builder $query) use ($contract) {
+                $query->whereIn('country_code', $contract->countries);
             }
         )->where('location', 'near', [
             '$geometry' => [
