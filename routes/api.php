@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\ContractController;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\WeatherMeasurementsController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('contract', ContractController::class)->name('api.contract');
         Route::get('measurements', WeatherMeasurementsController::class)->name('api.measurements');
 
         Route::prefix('auth')->group(function () {
