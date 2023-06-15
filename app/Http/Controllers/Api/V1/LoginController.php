@@ -24,6 +24,14 @@ class LoginController
 
         $user = Auth::user();
         $user->tokens()->delete();
+        $token = $user->createToken('company', [
+            "countries" => [
+                "NL"
+            ],
+            "selectable" => [
+                "wind_speed"
+            ]
+        ]);
 
         return $user->createToken(
             $contract->company->name
