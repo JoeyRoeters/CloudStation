@@ -5,7 +5,8 @@ use App\Http\Controllers\Api\V1\CompanyController;
 use App\Http\Controllers\Api\V1\ContractController;
 use App\Http\Controllers\Api\V1\LoginController;
 use App\Http\Controllers\Api\V1\RegistrationController;
-use App\Http\Controllers\Api\V1\WeatherMeasurementsController;
+use App\Http\Controllers\Api\V1\StationMeasurementsController;
+use App\Http\Controllers\Api\V1\StationQueryMeasurementsController;
 use App\Http\Middleware\ContractMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,11 @@ Route::prefix('v1')->middleware(ContractMiddleware::class)->group(function () {
     Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('company', CompanyController::class)->name('api.company');
         Route::get('contract', ContractController::class)->name('api.contract');
-        Route::get('measurements', WeatherMeasurementsController::class)->name('api.measurements');
+
+        Route::prefix('measurements')->group(function () {
+            Route::get('/', StationMeasurementsController::class)->name('api.measurements');
+            Route::get('query/{id}', StationQueryMeasurementsController::class)->name('api.measurements.query');
+        });
 
         Route::prefix('auth')->group(function () {
             Route::get('/', AuthController::class)->name('api.auth');

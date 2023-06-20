@@ -4,27 +4,16 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Facades\Contract;
 use App\Http\Requests\Api\V1\WeatherMeasurementsRequest;
-use App\Models\Station;
-use Jenssegers\Mongodb\Eloquent\Builder;
-use Jenssegers\Mongodb\Relations\HasMany;
-use Jenssegers\Mongodb\Relations\HasOne;
 
-class WeatherMeasurementsController
+class StationMeasurementsController
 {
     public function __invoke(WeatherMeasurementsRequest $request)
     {
         /** @var \App\Models\Contract $contract */
         $contract = Contract::getFacadeRoot();
 
-        return Station::query()->with(
-            $request->get('history') ? 'measurements' : 'newest',
-            function (HasOne|HasMany $query) use ($contract) {
-                $query->select('station_name', ...$contract->selectables);
-            }
-        )->whereHas('geolocation',
-            function (Builder $query) use ($contract) {
-                $query->whereIn('country_code', $contract->countries);
-            }
+        $contract->baseQuery(
+            $request->get('history')
         )->where('location', 'near', [
             '$geometry' => [
                 'type' => 'Point',
@@ -34,7 +23,7 @@ class WeatherMeasurementsController
                 ],
             ],
             '$maxDistance' => $request->get('distance') * 1000,
-        ])->select('name', 'location')->get()->each(function ($station) use ($request) {
+        ])->get()->each(function ($station) use ($request) {
             $station->distance = $this->calculateDistance(
                 $request->get('latitude'),
                 $request->get('longitude'),
@@ -47,8 +36,12 @@ class WeatherMeasurementsController
 
     //Magic van het internet, but it works
     private function calculateDistance(
-        $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
-    {
+        $latitudeFrom,
+        $longitudeFrom,
+        $latitudeTo,
+        $longitudeTo,
+        $earthRadius = 6371
+    ) {
         // convert from degrees to radians
         $latFrom = deg2rad($latitudeFrom);
         $lonFrom = deg2rad($longitudeFrom);

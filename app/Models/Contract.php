@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Jenssegers\Mongodb\Eloquent\Builder;
+use Jenssegers\Mongodb\Relations\HasMany;
+use Jenssegers\Mongodb\Relations\HasOne;
 
 /**
  * App\Models\Contract
@@ -50,5 +53,19 @@ class Contract extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function baseQuery(bool $withHistory = false): \Illuminate\Database\Eloquent\Builder
+    {
+        return Station::query()->with(
+            $withHistory ? 'measurements' : 'newest',
+            function (HasOne|HasMany $query) {
+                $query->select('station_name', ...$this->selectables);
+            }
+        )->whereHas('geolocation',
+            function (Builder $query) {
+                $query->whereIn('country_code', $this->countries);
+            }
+        );
     }
 }
