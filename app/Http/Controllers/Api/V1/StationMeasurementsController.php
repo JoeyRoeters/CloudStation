@@ -12,8 +12,8 @@ class StationMeasurementsController
         /** @var \App\Models\Contract $contract */
         $contract = Contract::getFacadeRoot();
 
-        $contract->baseQuery(
-            $request->get('history')
+        return $contract->baseQuery(
+            (bool) $request->get('history')
         )->where('location', 'near', [
             '$geometry' => [
                 'type' => 'Point',
