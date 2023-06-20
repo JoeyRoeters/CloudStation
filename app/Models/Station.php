@@ -37,7 +37,7 @@ class Station extends Model
     ];
 
     protected $hidden = [
-        '_id'
+        '_id',
     ];
 
     /**

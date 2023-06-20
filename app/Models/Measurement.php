@@ -89,7 +89,8 @@ class Measurement extends Model
     ];
 
     protected $hidden = [
-        '_id'
+        '_id',
+        'station_name'
     ];
 
     public function station(): BelongsTo

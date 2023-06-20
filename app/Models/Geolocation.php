@@ -29,6 +29,11 @@ class Geolocation extends Model
         'postcode'
     ];
 
+    protected $hidden = [
+        '_id',
+        'station_name'
+    ];
+
     public function station(): BelongsTo
     {
         return $this->belongsTo(Station::class, 'station_name', 'name');

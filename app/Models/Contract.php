@@ -62,6 +62,11 @@ class Contract extends Model
             function (HasOne|HasMany $query) {
                 $query->select('station_name', ...$this->selectables);
             }
+        )->with(
+            "geolocation",
+            function (HasOne $query) {
+                $query->select('station_name', 'country_code');
+            }
         )->whereHas('geolocation',
             function (Builder $query) {
                 $query->whereIn('country_code', $this->countries);
